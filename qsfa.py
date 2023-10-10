@@ -1,4 +1,4 @@
-#import numpy as np
+import numpy as np
 from math import ceil,log,sqrt,exp
 
 N=float(input("input a number for factoring: "))
@@ -52,3 +52,25 @@ def eulers_criterion(a,primes):
         else:
             print('neither')
             print(res)
+
+def eulers_criterion_loop(a,primes):
+    kept = []
+    for p in primes:
+        if eulers_criterion(a,p):
+            kept.append(p)
+    return kept
+
+def gen_primes(b,n):
+    base = sieve_of_eratosthenes(b)
+    better = eulers_criterion_loop(n,base)
+    return better
+
+def keep_to_mat(keep,primes):
+    mat = np.zeros((len(keep),len(primes)),int)
+    for i in range (len(keep)):
+        el = keep[i]
+        for num in el[0]:
+            mat[i][primes.index(num)] = ((mat[i][primes.index(num)])+1)%2 
+    return mat  
+
+
