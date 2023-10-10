@@ -1,4 +1,4 @@
-:#import numpy as np
+#import numpy as np
 from math import ceil,log,sqrt,exp
 
 N=float(input("input a number for factoring: "))
@@ -42,10 +42,13 @@ def prime_factors(y):
         factors.append(y)
     return factors
 
-def eulers_criterion(a,p):
-    res=int(a**((p-1)/2)%p)
-    if (res==p-1):
-        return False
-    else:
-        return True
-
+def eulers_criterion(a,primes):
+    for p in primes:
+        res=pow(a, (p-1)//2, p)
+        if (res==p-1):
+            return False
+        elif (res==1):
+            return True
+        else:
+            print('neither')
+            print(res)
