@@ -82,13 +82,38 @@ def N_to_matrix(N):
     print(fac_base)
     keep=factorable_nums(N,m,fac_base)
     mat=keep_to_mat(keep,fac_base)
-    return mat
+    return mat,keep
+    
+#index out of bound error. Need to figure out how null space sizing works the adjust accordingly
+def solver(ns,keep):
+    i = 0
+    positions = []
+    for rows in ns:
+        for thing in rows:
+            if thing != 0:
+                positions.append(i)
+        i+=1
+    kept = []
+    print("positions:", positions)
+    print("length:",len(keep))
+    for pos in positions:
+        kept.append(keep[pos])
+    left_side = 1
+    print(kept)
+    facmul = []
+    for k in kept:
+        left_side = (left_side * k)%N
+        facmul += k[1]
+    right_side = 1
+    for i in range(len(facmul)):
+        right_side = right_side*(facmul[2*i])
+    return left_side,right_side
 
 
 ### Actual Script!!!
 
 N=int(input("input a number for factoring: "))
-mat=N_to_matrix(N)
+mat,keep=N_to_matrix(N)
 print(mat.shape)
 print(mat)
 ns = null_space(mat)
