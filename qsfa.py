@@ -85,7 +85,7 @@ def N_to_matrix(N):
     return mat,keep
     
 #index out of bound error. Need to figure out how null space sizing works the adjust accordingly
-def solver(ns,keep):
+def get_equation(ns,keep,N):
     i = 0
     positions = []
     for rows in ns:
@@ -94,12 +94,9 @@ def solver(ns,keep):
                 positions.append(i)
         i+=1
     kept = []
-    print("positions:", positions)
-    print("length:",len(keep))
     for pos in positions:
         kept.append(keep[pos])
     left_side = 1
-    print(kept)
     facmul = []
     for k in kept:
         left_side = (left_side * k)%N
@@ -107,7 +104,18 @@ def solver(ns,keep):
     right_side = 1
     for i in range(len(facmul)):
         right_side = right_side*(facmul[2*i])
-    return left_side,right_side
+    return left_side%N,right_side%N
+
+def solve_equation(left,right,N):
+    d = gcd(left,right)
+    other = N/d
+    return d,other
+
+def solver(ns,keep,N):
+    left,right = get_equation(ns,keep,N)
+    fac1,fac2 = solve_equation(left,right,N)
+    return fac1,fac2
+
 
 
 ### Actual Script!!!
@@ -119,3 +127,4 @@ print(mat)
 ns = null_space(mat)
 ns=np.array(ns,dtype=int)
 print(ns)
+sol1,sol2 = solver(ns,keep,N)
